@@ -33,10 +33,10 @@ type CommandRequest struct {
 // Payload is an MDM payload
 type Payload struct {
 	CommandUUID string
-	Command     *command
+	Command     *Command
 }
 
-type command struct {
+type Command struct {
 	RequestType string `json:"request_type"`
 	DeviceInformation
 	InstallApplication
@@ -226,7 +226,7 @@ type data []byte
 func newPayload(requestType string) *Payload {
 	u := uuid.NewV4()
 	return &Payload{u.String(),
-		&command{RequestType: requestType}}
+		&Command{RequestType: requestType}}
 }
 
 // NewPayload creates an MDM Payload
