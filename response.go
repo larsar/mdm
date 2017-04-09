@@ -14,6 +14,49 @@ type Response struct {
 	SecurityInfo             SecurityInfo                     `json:"security_info,omitempty" plist:",omitempty"`
 	CertificateList          CertificateList                  `json:"certificate_list,omitempty" plist:",omitempty"`
 	InstalledApplicationList InstalledApplicationListResponse `json:"installed_application_list,omitempty" plist:",omitempty"`
+	ScheduleOSUpdateScan     ScheduleOSUpdateScanResponse     `json:"schedule_os_update_scan"`
+	OSUpdateStatus           OSUpdateStatusResponse           `json:"os_update_status,omitempty" plist:",omitempty"`
+	AvailableOSUpdates       AvailableOSUpdatesResponse       `json:"available_os_updates,omitempty" plist:",omitempty"`
+}
+
+type AvailableOSUpdatesResponse []AvailableOSUpdatesResponseItem
+
+type AvailableOSUpdatesResponseItem struct {
+	ProductKey        string  `json:"product_key"`
+	HumanReadableName string  `json:"human_readable_name"`
+	ProductName       string  `json:"product_name"`
+	Version           string  `json:"version"`
+	Build             string  `json:"build"`
+	DownloadSize      float64 `json:"download_size"`
+	InstallSize       float64 `json:"install_size"`
+
+	// Each entry represents an app identifier that is closed to install this update (macOS only).
+	AppIdentifiersToClose []string `json:"app_identifiers_to_close"`
+
+	IsCritical                bool `json:"is_critical"`
+	IsConfigurationDataUpdate bool `json:"is_configuration_data_update"`
+	IsFirmwareUpdate          bool `json:"is_firmware_update"`
+	RestartRequired           bool `json:"restart_required"`
+	AllowsInstallLater        bool `json:"allows_install_later"`
+}
+
+type ScheduleOSUpdateScanResponse struct {
+	ScanInitiated bool `json:"scan_initiated"`
+}
+
+type OSUpdateStatusResponse []OSUpdateStatusResponseItem
+
+type OSUpdateStatusResponseItem struct {
+	ProductKey              string  `json:"product_key"`
+	IsDownloaded            bool    `json:"is_downloaded"`
+	DownloadPercentComplete float64 `json:"download_percent_complete"`
+	/*
+		The status of this update. Possible values are:
+		Idle: No action is being taken on this software update.
+		Downloading: The software update is being downloaded.
+		Installing: The software update is being installed. This status may not be returned if the device must reboot during installation.
+	*/
+	Status string `json:"status"`
 }
 
 type ProvisioningProfileListItem struct {

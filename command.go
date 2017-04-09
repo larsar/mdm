@@ -16,6 +16,7 @@ type CommandRequest struct {
 	InstallApplication
 	AccountConfiguration
 	ScheduleOSUpdateScan
+	ScheduleOSUpdate
 	InstallProfile
 	RemoveProfile
 	InstallProvisioningProfile
@@ -114,13 +115,13 @@ type EnableLostMode struct {
 
 // InstallApplication is an InstallApplication MDM Command
 type InstallApplication struct {
-	ITunesStoreID         int                       `plist:"iTunesStoreID,omitempty" json:"itunes_store_id,omitempty"`
-	Identifier            string                    `plist:",omitempty" json:"identifier,omitempty"`
-	ManifestURL           string                    `plist:",omitempty" json:"manifest_url,omitempty"`
-	ManagementFlags       int                       `plist:",omitempty" json:"management_flags,omitempty"`
-	NotManaged            bool                      `plist:",omitempty" json:"not_managed,omitempty"`
-	ChangeManagementState string                    `plist:",omitempty" json:"change_management_state,omitempty"`
-	Options               InstallApplicationOptions `plist:",omitempty" json:"options,omitempty"`
+	ITunesStoreID         int                        `plist:"iTunesStoreID,omitempty" json:"itunes_store_id,omitempty"`
+	Identifier            string                     `plist:",omitempty" json:"identifier,omitempty"`
+	ManifestURL           string                     `plist:",omitempty" json:"manifest_url,omitempty"`
+	ManagementFlags       int                        `plist:",omitempty" json:"management_flags,omitempty"`
+	NotManaged            bool                       `plist:",omitempty" json:"not_managed,omitempty"`
+	ChangeManagementState string                     `plist:",omitempty" json:"change_management_state,omitempty"`
+	Options               *InstallApplicationOptions `plist:",omitempty" json:"options,omitempty"`
 	// TODO: add remaining optional fields
 }
 
@@ -208,7 +209,15 @@ type AdminAccount struct {
 }
 
 type OSUpdate struct {
-	ProductKey    string `json:"product_key"`
+	ProductKey string `json:"product_key"`
+	/*
+		One of the following:
+		Default: Download and/or install the software update, depending on the current device state. See the UpdateResults dictionary, below, to determine which InstallAction is scheduled.
+		DownloadOnly: Download the software update without installing it.
+		InstallASAP: Install an already downloaded software update.
+		NotifyOnly: Download the software update and notify the user via the App Store (macOS only).
+		InstallLater: Download the software update and install it at a later time (macOS only).
+	*/
 	InstallAction string `json:"install_action"`
 }
 
