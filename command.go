@@ -45,6 +45,7 @@ type Command struct {
 	InstalledApplicationList
 	AccountConfiguration
 	ScheduleOSUpdateScan
+	ScheduleOSUpdate
 	EraseDevice
 }
 
