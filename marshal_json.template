@@ -1,0 +1,28 @@
+func (c *CommandRequest) UnmarshalJSON(d []byte) error {
+	var j struct {
+		RequestType string `json:"request_type"`
+	}
+	if err := json.Unmarshal(d, &j); err != nil {
+		return err
+	}
+	switch j.RequestType {
+	{{ range . }}
+	case "{{.Case}}":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+			{{.Case}}
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		c.{{.Case}} = x.{{.Case}}
+		return nil
+	{{ end }}
+	default:
+		return fmt.Errorf("mdm: unknown request_type %s", j.RequestType)
+	}
+}
+

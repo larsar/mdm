@@ -1,10 +1,12 @@
 package mdm
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/groob/plist"
 	"testing"
+
+	"github.com/groob/plist"
 )
 
 // Basic tests will attempt to marshal and unmarshal mdm command structures to identify any naming or tag errors.
@@ -113,4 +115,38 @@ func TestApplyRedemptionCode(t *testing.T) {
 	cmd := ApplyRedemptionCode{Identifier: "id", RedemptionCode: "abcdefg"}
 	testMarshalJSON(t, cmd)
 	testMarshalPlist(t, cmd)
+}
+
+func TestMarshalWithOverlappingKeys(t *testing.T) {
+	rp := RemoveProfile{Identifier: "io.micromdm.test.profile"}
+
+	cmd := Command{RequestType: "RemoveProfile", RemoveProfile: rp}
+	out, err := plist.Marshal(&cmd)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// check that output contains Identifier field
+	if !bytes.Contains(out, []byte("Identifier")) {
+		t.Errorf("expected %v plist to contain identifier key, got \n%s", cmd.RequestType, out)
+	}
+
+}
+
+func TestUnmarshalOverlaplingKeys(t *testing.T) {
+	data := []byte(`{
+		"request_type":"RemoveProfile",
+		"udid":"abcd",
+		"identifier":"aaaa"
+	}`)
+
+	var req CommandRequest
+	if err := json.Unmarshal(data, &req); err != nil {
+		t.Fatal(err)
+	}
+
+	if req.RemoveProfile.Identifier != "aaaa" {
+		t.Errorf("expected RemoveProfile struct with Identifier field")
+	}
+
 }

@@ -1,5 +1,7 @@
 package mdm
 
+//go:generate go run generate_marshaler_code.go -out marshaler.go
+
 import (
 	"fmt"
 
@@ -11,8 +13,7 @@ type CommandRequest struct {
 	// Included with every payload
 	RequestType string `json:"request_type"`
 	UDID        string `json:"udid"`
-	// DeviceInformation request
-	Queries []string `json:"queries,omitempty"`
+	DeviceInformation
 	InstallApplication
 	AccountConfiguration
 	ScheduleOSUpdateScan
