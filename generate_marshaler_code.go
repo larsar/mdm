@@ -79,8 +79,8 @@ func generateUnmarshalJSON() []byte {
 		Case string
 	}
 	var params []param
-	val := reflect.ValueOf(mdm.CommandRequest{})
-	for i := 2; i < val.NumField(); i++ {
+	val := reflect.ValueOf(mdm.Command{})
+	for i := 1; i < val.NumField(); i++ {
 		name := val.Field(i).Type().Name()
 		params = append(params, param{Case: name})
 	}

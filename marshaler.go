@@ -28,33 +28,6 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 			InstallApplication: c.InstallApplication,
 		}, nil
 
-	case "InstallProfile":
-		return &struct {
-			RequestType string
-			InstallProfile
-		}{
-			RequestType:    c.RequestType,
-			InstallProfile: c.InstallProfile,
-		}, nil
-
-	case "RemoveProfile":
-		return &struct {
-			RequestType string
-			RemoveProfile
-		}{
-			RequestType:   c.RequestType,
-			RemoveProfile: c.RemoveProfile,
-		}, nil
-
-	case "InstalledApplicationList":
-		return &struct {
-			RequestType string
-			InstalledApplicationList
-		}{
-			RequestType:              c.RequestType,
-			InstalledApplicationList: c.InstalledApplicationList,
-		}, nil
-
 	case "AccountConfiguration":
 		return &struct {
 			RequestType string
@@ -82,13 +55,49 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 			ScheduleOSUpdate: c.ScheduleOSUpdate,
 		}, nil
 
-	case "EraseDevice":
+	case "InstallProfile":
 		return &struct {
 			RequestType string
-			EraseDevice
+			InstallProfile
 		}{
-			RequestType: c.RequestType,
-			EraseDevice: c.EraseDevice,
+			RequestType:    c.RequestType,
+			InstallProfile: c.InstallProfile,
+		}, nil
+
+	case "RemoveProfile":
+		return &struct {
+			RequestType string
+			RemoveProfile
+		}{
+			RequestType:   c.RequestType,
+			RemoveProfile: c.RemoveProfile,
+		}, nil
+
+	case "InstallProvisioningProfile":
+		return &struct {
+			RequestType string
+			InstallProvisioningProfile
+		}{
+			RequestType:                c.RequestType,
+			InstallProvisioningProfile: c.InstallProvisioningProfile,
+		}, nil
+
+	case "RemoveProvisioningProfile":
+		return &struct {
+			RequestType string
+			RemoveProvisioningProfile
+		}{
+			RequestType:               c.RequestType,
+			RemoveProvisioningProfile: c.RemoveProvisioningProfile,
+		}, nil
+
+	case "InstalledApplicationList":
+		return &struct {
+			RequestType string
+			InstalledApplicationList
+		}{
+			RequestType:              c.RequestType,
+			InstalledApplicationList: c.InstalledApplicationList,
 		}, nil
 
 	case "DeviceLock":
@@ -98,6 +107,87 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 		}{
 			RequestType: c.RequestType,
 			DeviceLock:  c.DeviceLock,
+		}, nil
+
+	case "ClearPasscode":
+		return &struct {
+			RequestType string
+			ClearPasscode
+		}{
+			RequestType:   c.RequestType,
+			ClearPasscode: c.ClearPasscode,
+		}, nil
+
+	case "EraseDevice":
+		return &struct {
+			RequestType string
+			EraseDevice
+		}{
+			RequestType: c.RequestType,
+			EraseDevice: c.EraseDevice,
+		}, nil
+
+	case "RequestMirroring":
+		return &struct {
+			RequestType string
+			RequestMirroring
+		}{
+			RequestType:      c.RequestType,
+			RequestMirroring: c.RequestMirroring,
+		}, nil
+
+	case "DeleteUser":
+		return &struct {
+			RequestType string
+			DeleteUser
+		}{
+			RequestType: c.RequestType,
+			DeleteUser:  c.DeleteUser,
+		}, nil
+
+	case "EnableLostMode":
+		return &struct {
+			RequestType string
+			EnableLostMode
+		}{
+			RequestType:    c.RequestType,
+			EnableLostMode: c.EnableLostMode,
+		}, nil
+
+	case "ApplyRedemptionCode":
+		return &struct {
+			RequestType string
+			ApplyRedemptionCode
+		}{
+			RequestType:         c.RequestType,
+			ApplyRedemptionCode: c.ApplyRedemptionCode,
+		}, nil
+
+	case "InstallMedia":
+		return &struct {
+			RequestType string
+			InstallMedia
+		}{
+			RequestType:  c.RequestType,
+			InstallMedia: c.InstallMedia,
+		}, nil
+
+	case "RemoveMedia":
+		return &struct {
+			RequestType string
+			RemoveMedia
+		}{
+			RequestType: c.RequestType,
+			RemoveMedia: c.RemoveMedia,
+		}, nil
+
+	case "Settings":
+		return &struct {
+			RequestType string
+			Settings
+		}{
+			RequestType: c.RequestType,
+			Settings:    c.Settings,
 		}, nil
 
 	default:
@@ -310,20 +400,6 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		c.RequestMirroring = x.RequestMirroring
 		return nil
 
-	case "Restrictions":
-		var x struct {
-			RequestType string `json:"request_type"`
-			UDID        string `json:"udid"`
-			Restrictions
-		}
-		if err := json.Unmarshal(d, &x); err != nil {
-			return err
-		}
-		c.RequestType = x.RequestType
-		c.UDID = x.UDID
-		c.Restrictions = x.Restrictions
-		return nil
-
 	case "DeleteUser":
 		var x struct {
 			RequestType string `json:"request_type"`
@@ -350,6 +426,62 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		c.RequestType = x.RequestType
 		c.UDID = x.UDID
 		c.EnableLostMode = x.EnableLostMode
+		return nil
+
+	case "ApplyRedemptionCode":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+			ApplyRedemptionCode
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		c.ApplyRedemptionCode = x.ApplyRedemptionCode
+		return nil
+
+	case "InstallMedia":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+			InstallMedia
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		c.InstallMedia = x.InstallMedia
+		return nil
+
+	case "RemoveMedia":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+			RemoveMedia
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		c.RemoveMedia = x.RemoveMedia
+		return nil
+
+	case "Settings":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+			Settings
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		c.Settings = x.Settings
 		return nil
 
 	default:

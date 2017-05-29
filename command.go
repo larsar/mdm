@@ -1,18 +1,26 @@
 package mdm
 
 //go:generate go run generate_marshaler_code.go -out marshaler.go
+//go:generate go run generate_payload_code.go -out new_payload.go
 
 import (
-	"fmt"
-
 	"github.com/satori/go.uuid"
 )
 
 // CommandRequest represents an MDM command request
 type CommandRequest struct {
-	// Included with every payload
+	UDID string `json:"udid"`
+	Command
+}
+
+// Payload is an MDM payload
+type Payload struct {
+	CommandUUID string
+	Command     *Command
+}
+
+type Command struct {
 	RequestType string `json:"request_type"`
-	UDID        string `json:"udid"`
 	DeviceInformation
 	InstallApplication
 	AccountConfiguration
@@ -27,29 +35,12 @@ type CommandRequest struct {
 	ClearPasscode
 	EraseDevice
 	RequestMirroring
-	Restrictions
 	DeleteUser
 	EnableLostMode
-}
-
-// Payload is an MDM payload
-type Payload struct {
-	CommandUUID string
-	Command     *Command
-}
-
-type Command struct {
-	RequestType string `json:"request_type"`
-	DeviceInformation
-	InstallApplication
-	InstallProfile
-	RemoveProfile
-	InstalledApplicationList
-	AccountConfiguration
-	ScheduleOSUpdateScan
-	ScheduleOSUpdate
-	EraseDevice
-	DeviceLock
+	ApplyRedemptionCode
+	InstallMedia
+	RemoveMedia
+	Settings
 }
 
 // The following commands are in the order provided by the apple documentation.
@@ -241,49 +232,4 @@ func newPayload(requestType string) *Payload {
 	u := uuid.NewV4()
 	return &Payload{u.String(),
 		&Command{RequestType: requestType}}
-}
-
-// NewPayload creates an MDM Payload
-func NewPayload(request *CommandRequest) (*Payload, error) {
-	requestType := request.RequestType
-	payload := newPayload(requestType)
-	switch requestType {
-	case "DeviceInformation":
-		payload.Command.DeviceInformation.Queries = request.Queries
-	case "ScheduleOSUpdateScan":
-		payload.Command.ScheduleOSUpdateScan = request.ScheduleOSUpdateScan
-	case "ProfileList",
-		"ProvisioningProfileList",
-		"CertificateList",
-		"SecurityInfo",
-		"StopMirroring",
-		"ClearRestrictionsPassword",
-		"UsersList",
-		"LogOutUser",
-		"DisableLostMode",
-		"DeviceLocation",
-		"ManagedMediaList",
-		"OSUpdateStatus",
-		"DeviceConfigured",
-		"AvailableOSUpdates",
-		"Restrictions":
-		return payload, nil
-	case "InstallApplication":
-		payload.Command.InstallApplication = request.InstallApplication
-	case "InstallProfile":
-		payload.Command.InstallProfile = request.InstallProfile
-	case "AccountConfiguration":
-		payload.Command.AccountConfiguration = request.AccountConfiguration
-	case "InstalledApplicationList":
-		payload.Command.InstalledApplicationList = request.InstalledApplicationList
-	case "EraseDevice":
-		payload.Command.EraseDevice = request.EraseDevice
-	case "DeviceLock":
-		payload.Command.DeviceLock = request.DeviceLock
-	case "RemoveProfile":
-		payload.Command.RemoveProfile = request.RemoveProfile
-	default:
-		return nil, fmt.Errorf("Unsupported MDM RequestType %v", requestType)
-	}
-	return payload, nil
 }
