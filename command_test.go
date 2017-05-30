@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/groob/plist"
@@ -148,5 +149,34 @@ func TestUnmarshalOverlaplingKeys(t *testing.T) {
 	if req.RemoveProfile.Identifier != "aaaa" {
 		t.Errorf("expected RemoveProfile struct with Identifier field")
 	}
+}
 
+func Test_PayloadWithNoFields(t *testing.T) {
+	data := []byte(`{
+		"request_type":"ProfileList",
+		"udid":"abcd"
+	}`)
+
+	var req CommandRequest
+	if err := json.Unmarshal(data, &req); err != nil {
+		t.Fatal(err)
+	}
+
+	payload, err := NewPayload(&req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	buf := new(bytes.Buffer)
+	if err := plist.NewEncoder(buf).Encode(payload); err != nil {
+		t.Fatal(err)
+	}
+
+	var have Payload
+	if err := plist.NewDecoder(buf).Decode(&have); err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(have, *payload) {
+		t.Errorf("have %+v\n want %+v", have, *payload)
+	}
 }

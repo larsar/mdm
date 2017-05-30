@@ -9,6 +9,26 @@ import (
 
 func (c *Command) MarshalPlist() (interface{}, error) {
 	switch c.RequestType {
+	case "ProfileList",
+		"ProvisioningProfileList",
+		"CertificateList",
+		"SecurityInfo",
+		"StopMirroring",
+		"ClearRestrictionsPassword",
+		"UsersList",
+		"LogOutUser",
+		"DisableLostMode",
+		"DeviceLocation",
+		"ManagedMediaList",
+		"OSUpdateStatus",
+		"DeviceConfigured",
+		"AvailableOSUpdates",
+		"Restrictions":
+		return &struct {
+			RequestType string
+		}{
+			RequestType: c.RequestType,
+		}, nil
 
 	case "DeviceInformation":
 		return &struct {
@@ -203,6 +223,31 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		return err
 	}
 	switch j.RequestType {
+	case "ProfileList",
+		"ProvisioningProfileList",
+		"CertificateList",
+		"SecurityInfo",
+		"StopMirroring",
+		"ClearRestrictionsPassword",
+		"UsersList",
+		"LogOutUser",
+		"DisableLostMode",
+		"DeviceLocation",
+		"ManagedMediaList",
+		"OSUpdateStatus",
+		"DeviceConfigured",
+		"AvailableOSUpdates",
+		"Restrictions":
+		var x struct {
+			RequestType string `json:"request_type"`
+			UDID        string `json:"udid"`
+		}
+		if err := json.Unmarshal(d, &x); err != nil {
+			return err
+		}
+		c.RequestType = x.RequestType
+		c.UDID = x.UDID
+		return nil
 
 	case "DeviceInformation":
 		var x struct {

@@ -165,7 +165,7 @@ type RemoveMedia struct {
 }
 
 type Settings struct {
-	Settings []Setting `json:"settings"`
+	Settings []Setting `plist:",omitempty" json:"settings,omitempty"`
 }
 
 type ManagedApplicationConfiguration struct {

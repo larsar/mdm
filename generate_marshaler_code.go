@@ -41,6 +41,27 @@ package mdm
 
 func (c *Command) MarshalPlist() (interface{}, error) {
 	switch c.RequestType {
+	case "ProfileList",
+		"ProvisioningProfileList",
+		"CertificateList",
+		"SecurityInfo",
+		"StopMirroring",
+		"ClearRestrictionsPassword",
+		"UsersList",
+		"LogOutUser",
+		"DisableLostMode",
+		"DeviceLocation",
+		"ManagedMediaList",
+		"OSUpdateStatus",
+		"DeviceConfigured",
+		"AvailableOSUpdates",
+		"Restrictions":
+		return &struct {
+			RequestType string
+		}{
+			RequestType:       c.RequestType,
+		}, nil
+
 	{{ range .}}
 	case "{{.Case}}":
 		return &struct {
