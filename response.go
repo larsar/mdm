@@ -17,6 +17,7 @@ type Response struct {
 	ScheduleOSUpdateScan     ScheduleOSUpdateScanResponse     `json:"schedule_os_update_scan"`
 	OSUpdateStatus           OSUpdateStatusResponse           `json:"os_update_status,omitempty" plist:",omitempty"`
 	AvailableOSUpdates       AvailableOSUpdatesResponse       `json:"available_os_updates,omitempty" plist:",omitempty"`
+	ProfileList              ProfileList                      `json:"profile_list,omitempty" plist:",omitempty"`
 }
 
 type AvailableOSUpdatesResponse []AvailableOSUpdatesResponseItem
@@ -226,3 +227,24 @@ type ErrorChainItem struct {
 }
 
 type ErrorChain []ErrorChainItem
+type PayloadContentItem struct {
+	PayloadDescription       string `json:"payload_description"`
+	PayloadDisplayName       string `json:"payload_display_name"`
+	PayloadIdentifier        string `json:"payload_identifier"`
+	PayloadOrganization      string `json:"payload_organization"`
+	PayloadVersion           int    `json:"payload_version"`
+}
+
+type ProfileListItem struct {
+	HasRemovalPasscode       bool                 `json:"has_removal_passcode"`
+	IsEncrypted              bool                 `json:"is_encrypted"`
+	PayloadContent           []PayloadContentItem `json:"payload_content,omitempty" plist:",omitempty"`
+	PayloadDescription       string               `json:"payload_description"`
+	PayloadDisplayName       string               `json:"payload_display_name"`
+	PayloadIdentifier        string               `json:"payload_identifier"`
+	PayloadOrganization      string               `json:"payload_organization"`
+	PayloadRemovalDisallowed bool                 `json:"payload_removal_disallowed"`
+	PayloadUUID              string               `json:"payload_uuid"`
+	PayloadVersion           int                  `json:"payload_version"`
+}
+type ProfileList []ProfileListItem

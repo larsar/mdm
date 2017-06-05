@@ -119,3 +119,24 @@ func TestInstalledApplicationListResponse(t *testing.T) {
 
 	fmt.Printf("%v\n", response)
 }
+
+func TestProfileListResponse(t *testing.T) {
+	profileListResponseBody, err := ioutil.ReadFile("./test/responses/profilelist.plist")
+	if err != nil {
+		t.Fatal(err)
+	}
+	response := &Response{}
+	if err := plist.Unmarshal(profileListResponseBody, response); err != nil {
+		t.Fatal(err)
+	}
+
+	if response.Status != "Acknowledged" {
+		t.Errorf("Response status was not `Acknowledged`.")
+	}
+
+	if response.ProfileList == nil {
+		t.Errorf("No ProfileList in response")
+	}
+
+	fmt.Printf("%v\n", response)
+}
