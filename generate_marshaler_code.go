@@ -55,7 +55,9 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 		"OSUpdateStatus",
 		"DeviceConfigured",
 		"AvailableOSUpdates",
-		"Restrictions":
+		"Restrictions",
+		"ShutDownDevice",
+		"RestartDevice":
 		return &struct {
 			RequestType string
 		}{

@@ -23,7 +23,9 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 		"OSUpdateStatus",
 		"DeviceConfigured",
 		"AvailableOSUpdates",
-		"Restrictions":
+		"Restrictions",
+		"ShutDownDevice",
+		"RestartDevice":
 		return &struct {
 			RequestType string
 		}{
@@ -237,7 +239,9 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		"OSUpdateStatus",
 		"DeviceConfigured",
 		"AvailableOSUpdates",
-		"Restrictions":
+		"Restrictions",
+		"ShutDownDevice",
+		"RestartDevice":
 		var x struct {
 			RequestType string `json:"request_type"`
 			UDID        string `json:"udid"`

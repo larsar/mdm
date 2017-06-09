@@ -20,7 +20,9 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		"OSUpdateStatus",
 		"DeviceConfigured",
 		"AvailableOSUpdates",
-		"Restrictions":
+		"Restrictions",
+		"ShutDownDevice",
+		"RestartDevice":
 		var x struct {
 			RequestType string `json:"request_type"`
 			UDID        string `json:"udid"`
