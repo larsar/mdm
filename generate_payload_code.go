@@ -42,7 +42,9 @@ func NewPayload(request *CommandRequest) (*Payload, error) {
 		"OSUpdateStatus",
 		"DeviceConfigured",
 		"AvailableOSUpdates",
-		"Restrictions":
+		"Restrictions",
+		"ShutDownDevice",
+		"RestartDevice":
 		return payload, nil
 	default:
 		return nil, fmt.Errorf("Unsupported MDM RequestType %v", requestType)
