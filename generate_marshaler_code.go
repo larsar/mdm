@@ -47,7 +47,7 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 		"SecurityInfo",
 		"StopMirroring",
 		"ClearRestrictionsPassword",
-		"UsersList",
+		"UserList",
 		"LogOutUser",
 		"DisableLostMode",
 		"DeviceLocation",

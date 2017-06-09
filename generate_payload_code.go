@@ -34,7 +34,7 @@ func NewPayload(request *CommandRequest) (*Payload, error) {
 		"SecurityInfo",
 		"StopMirroring",
 		"ClearRestrictionsPassword",
-		"UsersList",
+		"UserList",
 		"LogOutUser",
 		"DisableLostMode",
 		"DeviceLocation",

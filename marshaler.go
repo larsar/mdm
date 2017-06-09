@@ -15,7 +15,7 @@ func (c *Command) MarshalPlist() (interface{}, error) {
 		"SecurityInfo",
 		"StopMirroring",
 		"ClearRestrictionsPassword",
-		"UsersList",
+		"UserList",
 		"LogOutUser",
 		"DisableLostMode",
 		"DeviceLocation",
@@ -231,7 +231,6 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		"SecurityInfo",
 		"StopMirroring",
 		"ClearRestrictionsPassword",
-		"UsersList",
 		"LogOutUser",
 		"DisableLostMode",
 		"DeviceLocation",
@@ -240,6 +239,7 @@ func (c *CommandRequest) UnmarshalJSON(d []byte) error {
 		"DeviceConfigured",
 		"AvailableOSUpdates",
 		"Restrictions",
+		"UserList",
 		"ShutDownDevice",
 		"RestartDevice":
 		var x struct {
