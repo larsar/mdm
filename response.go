@@ -96,7 +96,7 @@ type CommonQueryResponses struct {
 	Locales               []string          `json:"locales,omitempty"`                // ATV 6+
 	DeviceID              string            `json:"device_id"`                        // ATV 6+
 	OrganizationInfo      map[string]string `json:"organization_info,omitempty"`      // IOS 7+
-	LastCloudBackupDate   string            `json:"last_cloud_backup_date,omitempty"` // IOS 8+
+	LastCloudBackupDate   time.Time         `json:"last_cloud_backup_date,omitempty"` // IOS 8+
 	AwaitingConfiguration bool              `json:"awaiting_configuration"`           // IOS 9+
 	// iTunes
 	ITunesStoreAccountIsActive bool   `json:"itunes_store_account_is_active"` // IOS 7+ OSX 10.9+
