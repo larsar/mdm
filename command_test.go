@@ -94,6 +94,23 @@ func TestRequestMirroring(t *testing.T) {
 //	cmd := Restrictions{}
 //}
 
+func TestSettings(t *testing.T) {
+	cmd := Settings{
+		Settings: []Setting{
+			Setting{
+				Item:       "DeviceName",
+				DeviceName: stringPtr("foo"),
+			},
+		},
+	}
+	testMarshalJSON(t, cmd)
+	testMarshalPlist(t, cmd)
+}
+
+func stringPtr(s string) *string {
+	return &s
+}
+
 func TestDeleteUser(t *testing.T) {
 	cmd := DeleteUser{UserName: "joe", ForceDeletion: false}
 	testMarshalJSON(t, cmd)
